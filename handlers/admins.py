@@ -122,6 +122,7 @@ async def stop(_, message: Message):
             queues.clear(chat_id)
         except QueueEmpty:
             pass
+        
         try:
             await callsmusic.pytgcalls.leave_group_call(chat_id)
             await message.reply_text("✅ **music playback has ended**")
@@ -254,7 +255,7 @@ async def cbresume(_, query: CallbackQuery):
                 "▶️ music playback has been resumed", reply_markup=BACK_BUTTON
             )
         except Exception as e:
-            await message.reply()
+            await message.reply(f"🚫 **error:**\n\n`{e}`")
     else:
         await query.edit_message_text(
             "❌ **no music is currently paused**", reply_markup=BACK_BUTTON
@@ -277,7 +278,7 @@ async def cbend(_, query: CallbackQuery):
                 reply_markup=BACK_BUTTON,
             )
         except Expection as e:
-            await message.reply()
+            await message.reply(f"🚫 **error:**\n\n`{e}`")
     else:
         await query.edit_message_text(
             "❌ **no music is currently playing**", reply_markup=BACK_BUTTON
@@ -288,11 +289,11 @@ async def cbend(_, query: CallbackQuery):
 async def cbskip(_, query: CallbackQuery):
     global que
     chat_id = get_chat_id(query.message.chat)
-    if query.message.chat.id not in callsmusic.pytgcalls.active_calls:
+    if query.message.chat.id in callsmusic.pytgcalls.active_calls:
         try:
             queues.task_done(query.message.chat.id)
         except Exception as e:
-            await message.reply()
+            await message.reply(f"🚫 **error:**\n\n`{e}`")
     else:
         await query.edit_message_text(
             "❌ **no music is currently playing**", reply_markup=BACK_BUTTON
