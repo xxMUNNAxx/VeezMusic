@@ -89,7 +89,7 @@ async def pause(_, message: Message):
                 "⏸ **Track paused.**\n\n• **To resume the playback, use the**\n» /resume command."
             )
         except Exception as e:
-            await.message.reply(f"🚫 **error:**\n\n`{e}`")
+            await message.reply(f"🚫 **error:**\n\n`{e}`")
     else:
          await message.reply("❌ **nothing in streaming**")
         
